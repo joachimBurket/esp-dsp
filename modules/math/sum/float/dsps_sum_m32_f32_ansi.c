@@ -12,14 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef _dsps_math_H_
-#define _dsps_math_H_
-
-#include "dsps_add.h"
 #include "dsps_sum.h"
-#include "dsps_sub.h"
-#include "dsps_mul.h"
-#include "dsps_addc.h"
-#include "dsps_mulc.h"
 
-#endif // _dsps_math_H_
+
+inline esp_err_t dsps_sum_m32_f32_ansi(const float *input, const float *mask, float *output, int len, int step_in, int step_mask)
+{
+    if (NULL == input) return ESP_ERR_DSP_PARAM_OUTOFRANGE;
+    if (NULL == output) return ESP_ERR_DSP_PARAM_OUTOFRANGE;
+
+    float acc = 0;
+
+    for (int i = 0 ; i < len ; i++) {
+        acc += input[i * step_in] * mask[i * step_mask];
+    }
+    *output = acc;
+    return ESP_OK;
+}
